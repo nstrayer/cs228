@@ -14,6 +14,8 @@ class Deliverable:
 
 		self.gestureData = np.zeros((5,4,6),dtype = "f") # Make a 3d matrix for storing gesture info
 
+		self.numberOfGesturesSaved = 0
+
 		self.previousNumberOfHands = 0
 		self.currentNumberOfHands = 0
 
@@ -21,6 +23,7 @@ class Deliverable:
 
 		self.fig = plt.figure( figsize=(12,8) ) # Make a figure
 		self.ax = self.fig.add_subplot( 111, projection="3d" ) # 3d yo. 
+		plt.draw
 
 		self.ax.set_xlim(-260,260)
 		self.ax.set_ylim(0,500)
@@ -77,9 +80,18 @@ class Deliverable:
 			self.HandleBone(i,j)
 
 	def SaveGesture(self):
-		fileName = "userData/gesture.dat"
+		self.numberOfGesturesSaved += 1 # Add a new gesture
+
+		print self.numberOfGesturesSaved
+
+		fileName = "userData/gesture" + str(self.numberOfGesturesSaved - 1) + ".dat" # Record the gesture info
 		f = open(fileName,"w")
 		np.save(f,self.gestureData)
+		f.close()
+
+		fileName = "userData/numberOfGesturesSaved.dat" # Record how many gestures
+		f = open(fileName, "w")							# are saved
+		f.write(str(self.numberOfGesturesSaved))
 		f.close()
 
 	def HandleHands(self):
