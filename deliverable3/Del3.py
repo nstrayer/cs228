@@ -23,7 +23,6 @@ class Deliverable:
 
 		self.fig = plt.figure( figsize=(12,8) ) # Make a figure
 		self.ax = self.fig.add_subplot( 111, projection="3d" ) # 3d yo. 
-		plt.draw
 
 		self.ax.set_xlim(-260,260)
 		self.ax.set_ylim(0,500)
