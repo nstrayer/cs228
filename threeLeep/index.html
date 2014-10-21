@@ -38,7 +38,8 @@
     var handPresent = false,
         successful  = false,
         framesAfter = 999,
-        numberToSign = 1;
+        numberToSign = 1,
+        currentRecording = 'zero.json.lz';
 
     Leap.loop({
 
@@ -104,9 +105,10 @@
         var screenPosition = handMesh.screenPosition(
           hand.palmPosition,
           riggedHandPlugin.camera
-        );
+        )
 
       }
+
     })
     .use('riggedHand')
     .use('handEntry')
@@ -130,7 +132,7 @@
     })
     .use('playback', {
       //recording: 'leap-playback-recording-100fps.json.lz', //recording of hand movement
-      recording: 'zero.json.lz',
+      recording: numberToSign + ".json.lz",
       timeBetweenLoops: 1000
     });
 
