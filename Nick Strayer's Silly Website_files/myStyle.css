@@ -1,0 +1,64 @@
+#bigWrapper{
+	text-align: center;
+}
+
+/*#menuBar {
+position:absolute;
+width:150px;
+left:10px;
+top:10px;
+}
+*/
+/*
+.sectionDivs {
+	position:absolute;
+	right:10px;
+	top:10px;
+	width: 800px;
+	text-align: left;
+}*/
+
+#menuBar {
+	float: left;
+	width:150px;
+}
+
+.sectionDivs {
+	float:right;
+	width: 800px;
+	text-align: left;
+}
+
+.hidden {
+	display: none;
+}
+
+.resumeSections {
+	text-align: center;
+	color: #0CBDE8;
+}
+
+.currentPosition {
+	color: #98C000
+}
+
+#key.currentPosition {
+	text-align: end; 
+}
+
+.pictures {
+	text-align: center
+}
+
+p {
+ 	font-family: Optima;
+    font-size: 16px; 
+}
+    
+.header {
+	text-align:right;
+	font-size: 36px;
+}
+
+    
+    
