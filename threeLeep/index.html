@@ -14,17 +14,14 @@
         color: white;
         background-color: steelblue;
       }
-
-      /*label {
-        position: fixed;
-        white-space: nowrap;
-      }*/
     </style>
   </head>
 
   <body>
     <div id="labels">
-        <p id = "feedback">Testing</p>
+        <p id = "prompt">Try signing a 1</p>
+        <p id = "feedback"></p>
+        <p id = "reward"></p>
     </div>
   </body>
 
@@ -32,14 +29,16 @@
 
     var riggedHandPlugin;
 
-    var handPresent = false,
-        successful  = false;
-
     function chooseNewNumber(){
         var max = 9,
             min = 0;
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
+
+    var handPresent = false,
+        successful  = false,
+        framesAfter = 999,
+        numberToSign = 1;
 
     Leap.loop({
 
@@ -47,7 +46,11 @@
 
         var handMesh = hand.data('riggedHand.mesh');
 
-        var fingers = hand.fingers,
+        if (successful){ //if the user succesfully signed the number
+            successful = false; //change the succesfull to false to restart
+        }
+
+        var fingers = hand.fingers,       //grab info on fingers for detecting numbers
             thumb   = fingers[0].extended,
             index   = fingers[1].extended,
             middle  = fingers[2].extended,
@@ -55,8 +58,20 @@
             pinky   = fingers[4].extended,
             currentlySigning;
 
+        framesAfter++ //increment the frames after counter up 1
+
+        if (framesAfter < 70){
+            d3.select("body").style("background-color", "green")
+            d3.select("#reward").text("Good Job!")
+        } else {
+            d3.select("body").style("background-color", "steelblue") //revert color of background
+            d3.select("#reward").text("")
+            d3.select("#prompt").text("Try signing a " + numberToSign)
+        }
         //Where all the magic happens!
-        if (!thumb && index && !middle && !ring && !pinky) {
+        if (thumb && !index && !middle && !ring && !pinky) {
+            currentlySigning = 0
+        } else if(!thumb && index && !middle && !ring && !pinky){
             currentlySigning = 1
         } else if(!thumb && index && middle && !ring && !pinky){
             currentlySigning = 2
@@ -75,9 +90,14 @@
         } else if (!thumb && !index && middle && ring && pinky){
             currentlySigning = 9
         } else {
-            currentlySigning = "Show me a number!"
+            currentlySigning = null
         }
 
+        if (currentlySigning == numberToSign){
+            successful = true
+            numberToSign = chooseNewNumber(); //re-choose a new number to sign
+            framesAfter = 1
+        }
 
         d3.select("#feedback").text(currentlySigning)
 
@@ -86,7 +106,6 @@
           riggedHandPlugin.camera
         );
 
-
       }
     })
     .use('riggedHand')
@@ -94,12 +113,12 @@
     .on('handLost', function(hand){
 
         if (handPresent){
-            d3.select("#feedback").text("Try signing the number!")
+            //d3.select("#prompt").text("Try signing a " + numberToSign)
             handPresent = false
         } else {
             handPresent = true
         }
-        console.log(handPresent)
+
         var label = hand.data('label');
         if (label){
           document.body.removeChild(label);
@@ -107,10 +126,11 @@
         }
     })
     .on('handEntry', function(){
-        handPresent = true
+        //handPresent = true
     })
     .use('playback', {
-      recording: 'leap-playback-recording-100fps.json.lz', //recording of hand movement
+      //recording: 'leap-playback-recording-100fps.json.lz', //recording of hand movement
+      recording: 'zero.json.lz',
       timeBetweenLoops: 1000
     });
 
