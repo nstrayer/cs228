@@ -9,15 +9,16 @@
 
     <style>
       body{
-        font-family: 'Myriad Pro', Helvetica, Arial, 'Lucida Grande', sans-serif;
-        font-size: 24pt;
+        font-family: optima;
+        font-size: 40pt;
         color: white;
         background-color: steelblue;
       }
-      label {
+
+      /*label {
         position: fixed;
         white-space: nowrap;
-      }
+      }*/
     </style>
   </head>
 
@@ -30,70 +31,68 @@
   <script type="text/javascript" class="codepen">
 
     var riggedHandPlugin;
+
     var handPresent = false,
-        successful  = true;
+        successful  = false;
 
     function chooseNewNumber(){
-        //place holder
         var max = 9,
             min = 0;
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
     Leap.loop({
+
       hand: function(hand){
-        var label = hand.data('label'); //the labeling of the hands
-
-        if (!label){
-
-          label = document.createElement('label');
-          document.body.appendChild(label);
-
-          /**
-           * Here we set the label to show the hand type
-           */
-          //label.innerHTML = hand.type + " hand";
-
-          var message;
-
-          if (successful){
-          if (hand.type == "left"){
-              message = ""
-          } else {
-              message = "0"
-          }
-          label.innerHTML = message;
-
-          hand.data('label', label)
-
-        }
-        } //end of succesful if statement
 
         var handMesh = hand.data('riggedHand.mesh');
 
-        var grip = hand.grabStrength
+        var fingers = hand.fingers,
+            thumb   = fingers[0].extended,
+            index   = fingers[1].extended,
+            middle  = fingers[2].extended,
+            ring    = fingers[3].extended,
+            pinky   = fingers[4].extended,
+            currentlySigning;
 
-        if (grip > 0.9 && handPresent){
-            d3.select("body").style("background-color", "green")
-            d3.select("#feedback").text("Good Job!")
-
+        //Where all the magic happens!
+        if (!thumb && index && !middle && !ring && !pinky) {
+            currentlySigning = 1
+        } else if(!thumb && index && middle && !ring && !pinky){
+            currentlySigning = 2
+        } else if (thumb && index && middle && !ring && !pinky){
+            currentlySigning = 3
+        } else if (!thumb && index && middle && ring && pinky){
+            currentlySigning = 4
+        } else if (thumb && index && middle && ring && pinky){
+            currentlySigning = 5
+        } else if (!thumb && index && middle && ring && !pinky){
+            currentlySigning = 6
+        } else if (!thumb && index && middle && !ring && pinky){
+            currentlySigning = 7
+        } else if (!thumb && index && !middle && ring && pinky){
+            currentlySigning = 8
+        } else if (!thumb && !index && middle && ring && pinky){
+            currentlySigning = 9
         } else {
-            d3.select("body").style("background-color", "steelblue")
+            currentlySigning = "Show me a number!"
         }
+
+
+        d3.select("#feedback").text(currentlySigning)
 
         var screenPosition = handMesh.screenPosition(
           hand.palmPosition,
           riggedHandPlugin.camera
         );
 
-        label.style.left = screenPosition.x + 50 + 'px';
-        label.style.bottom = screenPosition.y + 'px';
 
       }
     })
     .use('riggedHand')
     .use('handEntry')
     .on('handLost', function(hand){
+
         if (handPresent){
             d3.select("#feedback").text("Try signing the number!")
             handPresent = false
