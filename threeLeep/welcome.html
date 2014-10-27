@@ -6,11 +6,11 @@
 
   <body>
     <div class = "Absolute-Center" id="labels">
-        <p id = "prompt">Ready to play? Type your name:</p>
+        <p>Ready to play? Type your name:</p>
 
         <p id = "nameBox">
             <form name="myform" action="JavaScript:submitFunc()">
-                Name: <input type = "text" id = "name" name = "name">
+                Name: <input type = "text" id = "name" name = "name" autofocus>
                 <input type = "submit" name = "submit" onclick = "submitFunc()">
             </form>
         </p>
@@ -24,7 +24,7 @@
     function submitFunc(){
         user = document.getElementById("name").value;
         console.log("you clicked it!")
-        window.location.href = "test.html?" + user
+        window.location.href = "game.html?" + user
     }
 
   </script>
