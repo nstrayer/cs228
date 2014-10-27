@@ -1,0 +1,34 @@
+body{
+  font-family: optima;
+  font-size: 40pt;
+  color: white;
+  background-color: steelblue;
+}
+
+input{
+  padding: 4px;
+  font-size: 40px;
+  font-family: optima;
+  background: steelblue;
+  color: white;
+  border: solid 1px #fff;
+  box-shadow: inset 1px 1px 2px 0 #707070;
+  transition: box-shadow 0.3s;
+}
+
+input[type="text"] {
+    width: 300px;
+}*/
+
+input:focus,
+input.focus {
+  box-shadow: inset 1px 1px 2px 0 #c9c9c9;
+}
+
+.Absolute-Center {
+  text-align: center;
+  height: 50%;
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+}
