@@ -1,5 +1,3 @@
-console.log(userData)
-
 var riggedHandPlugin;
 
 function chooseNewNumber(){
@@ -37,6 +35,7 @@ Leap.loop({
     if (framesAfter < 70){
         d3.select("body").style("background-color", "green")
         d3.select("#reward").text("Good Job!")
+
     } else {
         d3.select("body").style("background-color", "steelblue") //revert color of background
         d3.select("#reward").text("")
@@ -74,6 +73,11 @@ Leap.loop({
         successful = true
         numberToSign = chooseNewNumber(); //re-choose a new number to sign
         framesAfter = 1
+        var control = new Leap.Controller()
+        control.use('playback', {
+              recording: numberToSign + ".json.lz",
+              timeBetweenLoops: 1000
+            });
     }
 
     d3.select("#feedback").text(currentlySigning)
@@ -89,21 +93,11 @@ Leap.loop({
 .use('riggedHand')
 .use('handEntry')
 .on('handLost', function(hand){
-
     if (handPresent){
         handPresent = false
     } else {
         handPresent = true
     }
-
-    var label = hand.data('label');
-    if (label){
-      document.body.removeChild(label);
-      hand.data({label: undefined});
-    }
-})
-.on('handEntry', function(){
-    //handPresent = true
 })
 .use('playback', {
   recording: numberToSign + ".json.lz",

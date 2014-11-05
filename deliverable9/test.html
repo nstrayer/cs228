@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <title>Let's learn sign language</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  </head>
+
+  <body>
+    <div id="labels">
+        <p class = "Absolute-Center" id = "prompt">It worked!</p>
+
+    </div>
+  </body>
+
+  <script type="text/javascript">
+
+  var userValue;
+
+  try{
+      userValue = window.location.href.split("?")[1].replace("/","")
+      scores    = localStorage.getItem(userValue)
+
+      d3.select("#prompt").text("Welcome, " + userValue)
+      if (scores == null){ //if it is the users first time create an entry
+          newUser = {"logins": 0, "number": 0}
+          localStorage[userValue] = JSON.stringify(newUser) //start scores at 0
+          scores = localStorage[userValue] //get the score from local storage
+          console.log("new user") //Let the console know this is a new user
+      }
+
+      console.log(scores)
+
+  } catch (err){
+
+      console.log("It didn't work :(")
+
+  }
+
+  userData = JSON.parse(scores)
+  userData.logins++
+  localStorage[userValue] = JSON.stringify(userData)
+  console.log(userData)
+
+  </script>
+</html>
