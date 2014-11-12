@@ -23,6 +23,8 @@ strong {
 }
 
 #numberCount{
+    font-size: 25pt;
+    padding-top: 50px;
     float: right;
     clear: right;
     width: 25%

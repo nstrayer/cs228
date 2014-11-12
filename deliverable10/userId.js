@@ -6,17 +6,14 @@ try{
   userValue = window.location.href.split("?")[1].replace("/","") //grab the user's name
   scores    = localStorage.getItem(userValue) //get the scores in string form
 
-  d3.select("#userName").text("Welcome, " + userValue) //greet the user
+  d3.select("#userName").text(userValue) //greet the user
 
   if (scores == null){ //if it is the user's first time create an entry
 
-      newUser = {"logins": 0, "lastSuccessRate": 0,
-                  0: {"successes":0, "failures":0}, 1: {"successes":0, "failures":0},
-                  2: {"successes":0, "failures":0}, 3: {"successes":0, "failures":0},
-                  4: {"successes":0, "failures":0}, 5: {"successes":0, "failures":0},
-                  6: {"successes":0, "failures":0}, 7: {"successes":0, "failures":0},
-                  8: {"successes":0, "failures":0}, 9: {"successes":0, "failures":0}
-                } //initialize the user's values.
+      newUser =  {"logins": 0, "lastSuccessRate": 0,
+                  0: [], 1: [], 2: [], 3: [], 4: [],
+                  5: [], 6: [], 7: [], 8: [], 9: []
+                 } //initialize the user's values. Empty vectors for recording each attempt: 1 = success 0 = failure.
 
       localStorage[userValue] = JSON.stringify(newUser) //send local storage their values
       scores = localStorage[userValue] //get the score from local storage
