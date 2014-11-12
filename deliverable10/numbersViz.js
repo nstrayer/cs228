@@ -32,13 +32,17 @@ var showMeMarker = numbersViz.append("circle")
                              .attr("id", "showMe")
                              .attr("cx", padding)
                              .attr("cy", yScale(-10) - 8.5)
-                             .attr("r", padding/1.5)
+                             .attr("r", padding)
+                             .attr("fill", "#666666")
+                             .attr("fill-opacity", 0.8)
 
 var showingMarker = numbersViz.append("circle")
                               .attr("id", "showing")
                               .attr("cx", w - padding)
                               .attr("cy", yScale(3) - 8.5)
-                              .attr("r", padding/1.5)
+                              .attr("r", padding)
+                              .attr("fill", "#666666")
+                              .attr("fill-opacity", 0.8)
 
 var wantText = numbersViz.append("text")
                          .text("Want")
@@ -74,13 +78,15 @@ function moveShowMe(where){
         .transition()
         .duration(duration)
         .attr("font-size", 25)
-        .attr("x", w/2 - 10)
+        .attr("x", w/2 - 14)
+        .attr("y", function(d){return yScale(d) - 8;})
 
     d3.select("#n" + where)
         .transition()
         .duration(duration/2)
-        .attr("font-size", 40)
+        .attr("font-size", 50)
         .attr("x", w/2 - 13)
+        .attr("y", function(d){return yScale(d);})
 }
 
 function moveShowing(where){

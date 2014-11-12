@@ -28,7 +28,7 @@ Leap.loop({
     framesAfter++ //increment the frames after counter up 1
     if (framesAfter == 100){ //reset frames elapsed success or failure screens
         framesElapsed = 0
-        updateStatus(successRate(userData[numberToSign],"current"), successRate(userData[numberToSign],"total"))
+        updateStatus(numberToSign,successRate(userData[numberToSign],"current"), successRate(userData[numberToSign],"total"))
         moveShowMe(numberToSign)
     } else {
         framesElapsed++ //increase framesElapsed

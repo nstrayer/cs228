@@ -18,16 +18,18 @@ strong {
 }
 
 #numbersViz {
+    padding-top: 20px;
+    /*padding-right: 40px;*/
     float: left;
     clear: left;
 }
 
 #numberCount{
     font-size: 25pt;
-    padding-top: 50px;
+    padding-top: 20px;
     float: right;
     clear: right;
-    width: 25%
+    /*width: 25%*/
 }
 
 /*#reward{
