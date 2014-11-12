@@ -28,7 +28,7 @@ Leap.loop({
     framesAfter++ //increment the frames after counter up 1
     if (framesAfter == 100){ //reset frames elapsed success or failure screens
         framesElapsed = 0
-        updateBar(successRate(userData[numberToSign],"current"), successRate(userData[numberToSign],"total"))
+        updateStatus(successRate(userData[numberToSign],"current"), successRate(userData[numberToSign],"total"))
         moveShowMe(numberToSign)
     } else {
         framesElapsed++ //increase framesElapsed
@@ -104,7 +104,6 @@ Leap.loop({
         if (framesToGuess < 300){framesToGuess = 300}                                        //put a floor on it.
         framesAfter   = 1                                                                    //Start frames after counter for success visualization
         console.log("User is going to sign " + numberToSign + " and has " + framesToGuess + " frames to do it.")
-        //updateBar(successRate(userData[numberToSign]))
     }
 
     //d3.select("#feedback").text(currentlySigning) //Update the gui to show the number they are currently signing

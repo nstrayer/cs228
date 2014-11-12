@@ -1,77 +1,116 @@
-var currentProgress = successRate(userData[numberToSign],"current") //hard code a current progress for fun fix later
+//var currentProgress = successRate(userData[numberToSign],"current") //hard code a current progress for fun fix later
 
-//var currentProgress = 100 //turn off for implimentation into full program.
-var totalProgress = successRate(userData[numberToSign],"overall")
+var currentProgress = 100 //turn off for implimentation into full program.
+var totalProgress = 80
+//var totalProgress = successRate(userData[numberToSign],"overall")
 
 var lastTime = 70
 
-var barScale = d3.scale.linear()
-                    .domain([0,100])
-                    .range([0,300])
+var height = 650,
+    width  = 300,
+    padding = 30;
+
+var progressScale =  d3.scale.linear()
+                            .domain([0,100])
+                            .range([height - padding,padding * 4 ])
 
 var svg = d3.select("#numberCount")
             .append("svg")
-            .attr("height", 400)
-            .attr("width" , 300)
+            .attr("height", height)
+            .attr("width" , width)
 
-var current = svg.append("rect")
-                .attr("id", "current")
-                .attr("x", 0)
-                .attr("y", 30)
-                .attr("height", 50)
-                .attr("fill", "#67a9cf")
-                .attr("width" , barScale(0))
-                .transition()
-                .duration(2000)
-                .attr("width" , barScale(currentProgress))
+var centerLine =  width/2
+var line   = svg.append("line")
+                .attr("x1",centerLine )
+                .attr("x2",centerLine )
+                .attr("y1", padding * 4)
+                .attr("y2", height - padding)
+                .attr("stroke-width", 1)
+                .attr("stroke", "black")
 
-var total = svg.append("rect")
-                .attr("id", "total")
-                .attr("x", 0)
-                .attr("y", 90)
-                .attr("height", 50)
-                .attr("fill", "#67a9cf")
-                .attr("width" , barScale(0))
-                .transition()
-                .duration(2000)
-                .attr("width" , barScale(totalProgress))
+var topLine = svg.append("line")
+                 .attr("x1", centerLine - 30 )
+                 .attr("x2", centerLine + 30 )
+                 .attr("y1", padding * 4)
+                 .attr("y2", padding * 4)
+                 .attr("stroke-width", 1)
+                 .attr("stroke", "black")
 
-var textLabels = [{"text": "Current", "position": 60},
-                  {"text": "Overall", "position": 120},
-                  //{"text": "Last Time", "position": 150}
-                  ]
+var bottomLine = svg.append("line")
+                    .attr("x1", centerLine - 30 )
+                    .attr("x2", centerLine + 30 )
+                    .attr("y1", height - padding)
+                    .attr("y2", height - padding)
+                    .attr("stroke-width", 1)
+                    .attr("stroke", "black")
+
+var current = svg.append("circle")
+                .attr("id", "currentCirc")
+                .attr("cx", centerLine - 80)
+                .attr("cy", padding*1.5 )
+                .attr("r",  30)
+                .attr("fill", "#fdc086")
+                .attr("fill-opacity", 0.8)
 
 
-var labelText = svg.selectAll("text")
-                    .data(textLabels)
-                    .enter()
-                    .append("text")
-                    .attr("id", function(d){return d.text;})
-                    .text(function(d){return d.text;})
-                    .attr("x", barScale(3))
-                    .attr("y",function(d){return d.position;})
-                    .attr("text-anchor", "begining")
-                    .attr("font-size", 20)
-                    .attr("fill", "white")
+var currentKey = svg.append("circle")
+                    .attr("cx", centerLine - 80)
+                    .attr("cy", padding*1.5 )
+                    .attr("r",  40)
+                    .attr("fill", "#fdc086")
 
-// var percentLine = svg.append("line")
-//                      .attr("x1",barScale(100) )
-//                      .attr("x2",barScale(100) )
-//                      .attr("y1", 170)
-//                      .attr("y2", 0)
-//                      .attr("stroke-width", 4)
-//                      .attr("stroke", "black")
+var currentKeyText = svg.append("text")
+                        .text("3")
+                        .attr("x", centerLine - 80)
+                        .attr("y", padding*1.5 + 10 )
+                        .attr("text-anchor", "middle")
 
-function updateBar(current, total){
-    d3.select("#current")
+var overAll = svg.append("circle")
+                .attr("id", "overAllCirc")
+                .attr("cx", centerLine + 80)
+                .attr("cy", padding*1.5)
+                .attr("r",  30)
+                .attr("fill", "#beaed4")
+                .attr("fill-opacity", 0.8)
+
+var overAllKey = svg.append("circle")
+                    .attr("cx", centerLine + 80)
+                    .attr("cy", padding*1.5)
+                    .attr("r",  40)
+                    .attr("fill", "#beaed4")
+
+var overAllKeyText = svg.append("text")
+                        .text("0-9")
+                        .attr("x", centerLine + 80)
+                        .attr("y", padding*1.5 + 10 )
+                        .attr("text-anchor", "middle")
+
+var progressTextData = [{"text": "Great!",        "pos": 100},
+                        {"text": "Keep working!", "pos": 0}   ]
+
+var progressText = svg.selectAll(".progressText")
+                        .data(progressTextData, function(d){return d.text})
+                        .enter()
+                        .append("text")
+                        .text(function(d){return d.text;})
+                        .attr("class", "progressText")
+                        .attr("x", centerLine + 32)
+                        .attr("y", function(d){return progressScale(d.pos);})
+                        .attr("font-size", 18)
+                        .attr("text-anchor", "begining")
+
+updateStatus(50,70)
+
+function updateStatus(current, total){
+    d3.select("#currentCirc")
           .transition()
           .duration(1000)
-          .attr("width" , barScale(current))
-          
+          .attr("cx", centerLine)
+          .attr("cy", progressScale(current) )
 
-    d3.select("#total")
-              .transition()
-              .duration(1000)
-              .attr("width" , barScale(total))
-
+    d3.select("#overAllCirc")
+          .transition()
+          .duration(1000)
+          .attr("cx", centerLine)
+          .attr("cy", progressScale(total) )
 }
