@@ -8,8 +8,11 @@ var handPresent  = false,
     celebrating  = false,
     fail         = false,
     upTo         = findProgress(userValue), //The last digit that is allowed to be used.
+    pastSuccess  = userData["lastSuccessRate"],
     framesToGuess= 1000,
     currentlySigning;
+
+console.log("Past success rate of " + pastSuccess)
 
 Leap.loop({
 
@@ -47,7 +50,7 @@ Leap.loop({
         d3.select("body").style("background-color", backgroundColor(framesElapsed, framesToGuess)) //revert color of background
         d3.select("#reward").text("") //Get rid of good job message, it's serious again
         d3.select("#prompt").text("Try signing a " + numberToSign) //Update with new number to sign.
-        d3.select("#numberCount").text("Signed " + userData[numberToSign] + " times" ) //Update with the number of times signed
+        d3.select("#numberCount").text("Your success rate for " + numberToSign + " is " + successRate(userData[numberToSign]) + "%") //Update with the number of times signed
         celebrating = false //turn off celebrating boolean for finger hints
         fail        = false //turn off fail
         localStorage[userValue] = JSON.stringify(userData) //update the user's data
@@ -80,9 +83,10 @@ Leap.loop({
 
     if (framesElapsed == framesToGuess){ //user ran out of time without signing number
         fail          = true //they did indeed fail
+        userData[numberToSign]["failures"]++
         numberToSign  = chooseNewNumber(upTo); //choose new number
-        showHint      = getHint(skillLevelGet(userData[numberToSign])) //Decide to show hint for next # or not.
-        framesToGuess = howManyFrames(userData[numberToSign]) //Get how long the user has for the attempt
+        showHint      = getHint(skillLevelGet(userData[numberToSign]["successes"])) //Decide to show hint for next # or not.
+        framesToGuess = howManyFrames(userData[numberToSign]["successes"]) //Get how long the user has for the attempt
         if (framesToGuess < 300){framesToGuess = 300} //put a floor on it.
         framesAfter   = 1    // Start frames after counter
         console.log("User is going to sign " + numberToSign + " and has " + framesToGuess + " frames to do it.")
@@ -90,11 +94,11 @@ Leap.loop({
     //If the user has successfully signed the number assigned to them:
     if (currentlySigning == numberToSign){
         celebrating  = true          // Turn on celebrating to turn off finger hints, less confusing
-        userData[currentlySigning]++ //increment the count for the signed number
-        if (userData[upTo] > 5){upTo++} //if they have signed the current number 5 or more times, add a new #
+        userData[currentlySigning]["successes"]++ //increment the count for the signed number
+        if (userData[upTo]["successes"] > 5){upTo++} //if they have signed the current number 5 or more times, add a new #
         numberToSign  = chooseNewNumber(upTo); //re-choose a new number to sign, keeping in mind how far along the user is
-        framesToGuess = howManyFrames(userData[numberToSign]) //Get how long the user has for the attempt
-        showHint      = getHint(skillLevelGet(userData[numberToSign])) //Decide to show hint for next # or not.
+        framesToGuess = howManyFrames(userData[numberToSign]["successes"]) //Get how long the user has for the attempt
+        showHint      = getHint(skillLevelGet(userData[numberToSign]["successes"])) //Decide to show hint for next # or not.
         if (framesToGuess < 300){framesToGuess = 300} //put a floor on it.
         framesAfter   = 1 // Start frames after counter for success visualization
         console.log("User is going to sign " + numberToSign + " and has " + framesToGuess + " frames to do it.")
@@ -215,7 +219,7 @@ Leap.loop({
 })
 .use('handEntry')
 .use('playback', {
-    recording: numberToSign + ".json.lz",
+    recording: "recordings/" + numberToSign + ".json.lz",
     timeBetweenLoops: 1000
 })
 .on('handLost', function(hand){
@@ -259,6 +263,9 @@ function chooseNewNumber(max){ //Choose a new number for the user to sign
     return newNumber;
 }
 
+function successRate(numberData){
+    return Math.round(  (numberData["successes"]/(numberData["successes"] + numberData["failures"]))*100 );
+}
 
 //A function to assign a skill level based upon the number of times the user has signed a particular number.
 var skillLevelGet = d3.scale.linear()
