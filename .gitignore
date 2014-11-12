@@ -4,3 +4,4 @@ LeapPython.so
 __init__.py
 backupSample.py
 libLeap.dylib
+*.json.lz
