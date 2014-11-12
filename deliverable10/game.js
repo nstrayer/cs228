@@ -12,8 +12,6 @@ var handPresent  = false,
     framesToGuess= 1000,
     currentlySigning;
 
-console.log("Past success rate of " + pastSuccess)
-
 Leap.loop({
 
   hand: function(hand){
@@ -31,6 +29,7 @@ Leap.loop({
     if (framesAfter == 100){ //reset frames elapsed success or failure screens
         framesElapsed = 0
         updateBar(successRate(userData[numberToSign],"current"), successRate(userData[numberToSign],"total"))
+        moveShowMe(numberToSign)
     } else {
         framesElapsed++ //increase framesElapsed
     }
@@ -50,7 +49,7 @@ Leap.loop({
     } else { //normal screen
         d3.select("body").style("background-color", backgroundColor(framesElapsed, framesToGuess)) //revert color of background
         d3.select("#reward").text("") //Get rid of good job message, it's serious again
-        d3.select("#prompt").text(numberToSign) //Update with new number to sign.
+        //d3.select("#prompt").text(numberToSign) //Update with new number to sign.
         //d3.select("#numberCount").text("Your success rate for " + numberToSign + " is " + successRate(userData[numberToSign]) + "%") //Update with the number of times signed
         celebrating = false //turn off celebrating boolean for finger hints
         fail        = false //turn off fail
@@ -108,8 +107,8 @@ Leap.loop({
         //updateBar(successRate(userData[numberToSign]))
     }
 
-    d3.select("#feedback").text(currentlySigning) //Update the gui to show the number they are currently signing
-
+    //d3.select("#feedback").text(currentlySigning) //Update the gui to show the number they are currently signing
+    moveShowing(currentlySigning)
     var screenPosition = handMesh.screenPosition(
       hand.palmPosition,
       riggedHandPlugin.camera

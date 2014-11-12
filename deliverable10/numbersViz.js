@@ -1,8 +1,8 @@
-var showMe  = 8, //hard code some test numbers.
-    showing = 4;
+var showMe  = numberToSign, //hard code some test numbers.
+    showing = -10;
 
 var numbers = [0,1,2,3,4,5,6,7,8,9],
-    h       = 550,
+    h       = 650,
     w       = 200,
     padding = 30,
     duration= 1000;
@@ -31,7 +31,7 @@ var nums = numbersViz.selectAll("text")
 var showMeMarker = numbersViz.append("circle")
                              .attr("id", "showMe")
                              .attr("cx", padding)
-                             .attr("cy", yScale(-1) - 8.5)
+                             .attr("cy", yScale(-10) - 8.5)
                              .attr("r", padding/1.5)
 
 var showingMarker = numbersViz.append("circle")
@@ -87,6 +87,7 @@ function moveShowing(where){
     if (where !== "_"){
         showingMarker
             .transition()
+            .duration(400)
             .ease("elastic")
             .duration(duration)
             .attr("cy", yScale(where) - 8.5)

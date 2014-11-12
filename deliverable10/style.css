@@ -17,7 +17,7 @@ strong {
     float: right;
 }
 
-#feedback {
+#numbersViz {
     float: left;
     clear: left;
 }
@@ -30,10 +30,10 @@ strong {
     width: 25%
 }
 
-#reward{
+/*#reward{
     float:left;
     clear:both;
-}
+}*/
 
 input{
 

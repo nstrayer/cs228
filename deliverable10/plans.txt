@@ -8,14 +8,14 @@ add an overall progress bar:
 
 progress vis will be:
 
---Current numeber |=======|
+--Current number |=======|
 --Overall         |=====|
 --Last time       |======|
 
 
 Next to do:
-- Make function for overall percentage and implement updating into the d3 viz
-- Figure out how to get "last time" data and implement that into the viz as well. May actually not be needed... too much data. 
+- Figure out how to get "last time" data and implement that into the viz as well. May actually not be needed... too much data.
+- migrate repeated stuff to framesAfter == 100 conditional
 
 For end product:
 have a intro hand/hands be playful when user is signing in or registering
