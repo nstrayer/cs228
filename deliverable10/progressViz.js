@@ -1,7 +1,8 @@
-var currentProgress = successRate(userData[numberToSign]) //hard code a current progress for fun fix later
+var currentProgress = successRate(userData[numberToSign],"current") //hard code a current progress for fun fix later
 
 //var currentProgress = 100 //turn off for implimentation into full program.
-var totalProgress = 60
+var totalProgress = successRate(userData[numberToSign],"overall")
+
 var lastTime = 70
 
 var barScale = d3.scale.linear()
@@ -16,7 +17,7 @@ var svg = d3.select("#numberCount")
 var current = svg.append("rect")
                 .attr("id", "current")
                 .attr("x", 0)
-                .attr("y", 0)
+                .attr("y", 30)
                 .attr("height", 50)
                 .attr("fill", "#67a9cf")
                 .attr("width" , barScale(0))
@@ -27,7 +28,7 @@ var current = svg.append("rect")
 var total = svg.append("rect")
                 .attr("id", "total")
                 .attr("x", 0)
-                .attr("y", 60)
+                .attr("y", 90)
                 .attr("height", 50)
                 .attr("fill", "#67a9cf")
                 .attr("width" , barScale(0))
@@ -35,20 +36,21 @@ var total = svg.append("rect")
                 .duration(2000)
                 .attr("width" , barScale(totalProgress))
 
-var lastTime = svg.append("rect")
-                .attr("id", "total")
-                .attr("x", 0)
-                .attr("y", 120)
-                .attr("height", 50)
-                .attr("fill", "#67a9cf")
-                .attr("width" , barScale(0))
-                .transition()
-                .duration(2000)
-                .attr("width" , barScale(lastTime))
+// var lastTime = svg.append("rect")
+//                 .attr("id", "total")
+//                 .attr("x", 0)
+//                 .attr("y", 120)
+//                 .attr("height", 50)
+//                 .attr("fill", "#67a9cf")
+//                 .attr("width" , barScale(0))
+//                 .transition()
+//                 .duration(2000)
+//                 .attr("width" , barScale(lastTime))
 
-var textLabels = [{"text": "Current", "position": 30},
-                  {"text": "Total", "position": 90},
-                  {"text": "Last Time", "position": 150},]
+var textLabels = [{"text": "Current", "position": 60},
+                  {"text": "Overall", "position": 120},
+                  //{"text": "Last Time", "position": 150}
+                  ]
 
 
 var labelText = svg.selectAll("text")
@@ -70,11 +72,16 @@ var percentLine = svg.append("line")
                      .attr("stroke-width", 4)
                      .attr("stroke", "black")
 
-function updateBar(newProgress){
+function updateBar(current, total){
     d3.select("#current")
           .transition()
           .duration(1000)
-          .attr("width" , barScale(newProgress))
+          .attr("width" , barScale(current))
+
+    d3.select("#total")
+              .transition()
+              .duration(1000)
+              .attr("width" , barScale(total))
 
     // newText = "Progress"
     // if (newProgress == 100){

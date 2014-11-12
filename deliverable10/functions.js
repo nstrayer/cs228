@@ -40,12 +40,23 @@ function numOfFailures(numberData){
     return numberData.filter(function(x){return x==0}).length
 }
 
-function successRate(numberData){ //takes the users last twenty attempts and finds success rate for number
+function successRate(numberData,time){ //takes the users last twenty attempts and finds success rate for number
+    var data;
     if(numberData.length == 0){
         return 0
     } else {
-        var lastTwenty = numberData.slice(-20);
-        return Math.round(  (numOfSuccesses(lastTwenty)/(numOfSuccesses(lastTwenty) + numOfFailures(lastTwenty)))*100 );
+        if (time == "current"){
+            data = numberData.slice(-20);
+        } else if (time = "overall"){
+            data = []
+            for (var i = 0; i < 10; i++){
+            data = data.concat(userData[i])
+            }
+        } else {
+            var data = numberData;
+        }
+
+        return Math.round(  (numOfSuccesses(data)/(numOfSuccesses(data) + numOfFailures(data)))*100 );
     }
 }
 
@@ -66,26 +77,3 @@ function backgroundColor(currentFrame, framesToGuess){
 var howManyFrames = d3.scale.linear()
                       .domain([0,20])
                       .range([1000,300])
-
-function updateBar(newProgress){
-    d3.select("#progressBar")
-          .transition()
-          .duration(1000)
-          .attr("width" , barScale(newProgress))
-
-    newText = "Progress"
-    if (newProgress == 100){
-        newText = "Perfect!"
-    } else if (90 < newProgress){
-        newText = "Awesome!"
-    } else if (80  < newProgress){
-        newText = "Getting good!"
-    } else if (60  < newProgress){
-        newText = "Keep working!"
-    } else {
-        newText = "You can do it!"
-    }
-
-    d3.select("#progressText")
-      .text(newText)
-}

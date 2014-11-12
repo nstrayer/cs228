@@ -30,6 +30,7 @@ Leap.loop({
     framesAfter++ //increment the frames after counter up 1
     if (framesAfter == 100){ //reset frames elapsed success or failure screens
         framesElapsed = 0
+        updateBar(successRate(userData[numberToSign],"current"), successRate(userData[numberToSign],"total"))
     } else {
         framesElapsed++ //increase framesElapsed
     }
@@ -49,7 +50,7 @@ Leap.loop({
     } else { //normal screen
         d3.select("body").style("background-color", backgroundColor(framesElapsed, framesToGuess)) //revert color of background
         d3.select("#reward").text("") //Get rid of good job message, it's serious again
-        d3.select("#prompt").text("Try signing a " + numberToSign) //Update with new number to sign.
+        d3.select("#prompt").text(numberToSign) //Update with new number to sign.
         //d3.select("#numberCount").text("Your success rate for " + numberToSign + " is " + successRate(userData[numberToSign]) + "%") //Update with the number of times signed
         celebrating = false //turn off celebrating boolean for finger hints
         fail        = false //turn off fail
@@ -85,12 +86,12 @@ Leap.loop({
         fail          = true                                                                //they did indeed fail
         userData[numberToSign].push(0)                                                      //add a zero or fail to the results vector
         numberToSign  = chooseNewNumber(upTo);                                              //choose new number
-        showHint      = getHint(skillLevelGet(successRate( userData[numberToSign])))       //Decide to show hint for next # or not.
+        showHint      = getHint(skillLevelGet(successRate( userData[numberToSign], "current" ) ))       //Decide to show hint for next # or not.
         framesToGuess = howManyFrames(        numOfSuccesses( userData[numberToSign]) )       //Get how long the user has for the attempt
         if (framesToGuess < 300){framesToGuess = 300} //put a floor on it.
         framesAfter   = 1    // Start frames after counter
         console.log("User is going to sign " + numberToSign + " and has " + framesToGuess + " frames to do it.")
-        updateBar(successRate(userData[numberToSign]))
+
     }
     //If the user has successfully signed the number assigned to them:
     if (currentlySigning == numberToSign){
@@ -99,12 +100,12 @@ Leap.loop({
         console.log(userData[currentlySigning])                                                //Add a 1 to result vector for success
         if (numOfSuccesses(userData[upTo]) > 5){upTo++}                                        //if they have signed the current number 5 or more times, add a new #
         numberToSign  = chooseNewNumber(upTo);                                               //re-choose a new number to sign, keeping in mind how far along the user is
-        showHint      = getHint(skillLevelGet(successRate( userData[numberToSign])))       //Decide to show hint for next # or not.
+        showHint      = getHint(skillLevelGet(successRate( userData[numberToSign], "current")))       //Decide to show hint for next # or not.
         framesToGuess = howManyFrames(        numOfSuccesses(userData[numberToSign]))        //Get how long the user has for the attempt
         if (framesToGuess < 300){framesToGuess = 300}                                        //put a floor on it.
         framesAfter   = 1                                                                    //Start frames after counter for success visualization
         console.log("User is going to sign " + numberToSign + " and has " + framesToGuess + " frames to do it.")
-        updateBar(successRate(userData[numberToSign]))
+        //updateBar(successRate(userData[numberToSign]))
     }
 
     d3.select("#feedback").text(currentlySigning) //Update the gui to show the number they are currently signing
