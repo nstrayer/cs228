@@ -2,7 +2,7 @@ var showMe  = numberToSign, //hard code some test numbers.
     showing = -10;
 
 var numbers = [0,1,2,3,4,5,6,7,8,9],
-    h       = 650,
+    h       = 720,
     w       = 200,
     padding = 30,
     duration= 1000;
@@ -23,10 +23,10 @@ var nums = numbersViz.selectAll("text")
                      .text(function(d){return d;})
                      .attr("id", function(d){return "n" + d;})
                      .attr("class", "numbers")
-                     .attr("x", w/2 - 10)
+                     .attr("x", w/2)
                      .attr("y", function(d){return yScale(d);})
                      .attr("font-size", 25)
-                     .attr("text-anchor", "begining")
+                     .attr("text-anchor", "middle")
 
 var showMeMarker = numbersViz.append("circle")
                              .attr("id", "showMe")
@@ -49,14 +49,14 @@ var wantText = numbersViz.append("text")
                          .attr("x",padding)
                          .attr("y", padding)
                          .attr("text-anchor", "middle")
-                         .attr("font-size", 20)
+                         .attr("font-size", 25)
 
 var haveText = numbersViz.append("text")
                          .text("Have")
                          .attr("x",w - padding)
                          .attr("y", padding)
                          .attr("text-anchor", "middle")
-                         .attr("font-size", 20)
+                         .attr("font-size", 25)
 
 var seperation = numbersViz.append("line")
                      .attr("x1",padding*0.7 )
@@ -78,14 +78,12 @@ function moveShowMe(where){
         .transition()
         .duration(duration)
         .attr("font-size", 25)
-        .attr("x", w/2 - 14)
         .attr("y", function(d){return yScale(d) - 8;})
 
     d3.select("#n" + where)
         .transition()
         .duration(duration/2)
         .attr("font-size", 50)
-        .attr("x", w/2 - 13)
         .attr("y", function(d){return yScale(d);})
 }
 

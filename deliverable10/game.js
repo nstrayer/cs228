@@ -1,15 +1,15 @@
 var riggedHandPlugin;
 
-var handPresent  = false,
-    framesAfter  = 999,  //number of frames after succesfull sign, for success and fail screen triggers
-    framesElapsed= 0,    //frames since being given new number to sign, for background color change
-    numberToSign = 1,    //always start with one, no reason in particular
-    showHint     = true, //always show hints at first
-    celebrating  = false,
-    fail         = false,
-    upTo         = findProgress(userValue), //The last digit that is allowed to be used.
-    pastSuccess  = userData["lastSuccessRate"],
-    framesToGuess= 1000,
+var handPresent   = false,
+    framesAfter   = 999,  //number of frames after succesfull sign, for success and fail screen triggers
+    framesElapsed = 0,    //frames since being given new number to sign, for background color change
+    numberToSign  = 1,    //always start with one, no reason in particular
+    showHint      = true, //always show hints at first
+    celebrating   = false,
+    fail          = false,
+    upTo          = findProgress(userValue), //The last digit that is allowed to be used.
+    pastSuccess   = userData["lastSuccessRate"],
+    framesToGuess = 1000,
     currentlySigning;
 
 Leap.loop({
@@ -28,7 +28,8 @@ Leap.loop({
     framesAfter++ //increment the frames after counter up 1
     if (framesAfter == 100){ //reset frames elapsed success or failure screens
         framesElapsed = 0
-        updateStatus(numberToSign,successRate(userData[numberToSign],"current"), successRate(userData[numberToSign],"total"))
+        updateStatus(successRate(userData[numberToSign],"current"), successRate(userData[numberToSign],"overAll"))
+        userData["lastSuccessRate"] = successRate(userData[numberToSign],"current")
         moveShowMe(numberToSign)
     } else {
         framesElapsed++ //increase framesElapsed
@@ -49,10 +50,7 @@ Leap.loop({
     } else { //normal screen
         d3.select("body").style("background-color", backgroundColor(framesElapsed, framesToGuess)) //revert color of background
         d3.select("#reward").text("") //Get rid of good job message, it's serious again
-        //d3.select("#prompt").text(numberToSign) //Update with new number to sign.
-        //d3.select("#numberCount").text("Your success rate for " + numberToSign + " is " + successRate(userData[numberToSign]) + "%") //Update with the number of times signed
-        celebrating = false //turn off celebrating boolean for finger hints
-        fail        = false //turn off fail
+        fail = false //turn off fail
         localStorage[userValue] = JSON.stringify(userData) //update the user's data
     }
 
@@ -106,7 +104,6 @@ Leap.loop({
         console.log("User is going to sign " + numberToSign + " and has " + framesToGuess + " frames to do it.")
     }
 
-    //d3.select("#feedback").text(currentlySigning) //Update the gui to show the number they are currently signing
     moveShowing(currentlySigning)
     var screenPosition = handMesh.screenPosition(
       hand.palmPosition,

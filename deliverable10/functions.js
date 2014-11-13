@@ -42,18 +42,22 @@ function numOfFailures(numberData){
 
 function successRate(numberData,time){ //takes the users last twenty attempts and finds success rate for number
     var data;
-    if(numberData.length == 0){
+    if( numberData.length == 0){
         return 0
     } else {
         if (time == "current"){
+
             data = numberData.slice(-20);
-        } else if (time = "overall"){
+
+        } else if (time = "overAll"){
+
             data = []
             for (var i = 0; i < 10; i++){
-            data = data.concat(userData[i])
+                data = data.concat(userData[i].slice(-20))
             }
+
         } else {
-            var data = numberData;
+            data = numberData;
         }
 
         return Math.round(  (numOfSuccesses(data)/(numOfSuccesses(data) + numOfFailures(data)))*100 );
@@ -69,11 +73,35 @@ function backgroundColor(currentFrame, framesToGuess){
 
     var colorScale = d3.scale.linear()
                         .domain([0,framesToGuess])
-                        .range(["steelblue", "red"])
+                        .range(["#1f78b4", "#e31a1c"])
 
     return colorScale(currentFrame);
 }
 
 var howManyFrames = d3.scale.linear()
                       .domain([0,20])
-                      .range([1000,300])
+                      .range([500,200])
+
+
+function everyoneAvg(){
+    var userData,
+        bigArray = []
+        successes = 0
+        fails = 0;
+
+    for (var key in localStorage){
+
+        userData = JSON.parse(localStorage[key]) //grab each persons data
+        // console.log(key)
+        // console.log(userData)
+
+        for (var i = 0; i < 10; i++){ //loop through their numbers
+            bigArray = bigArray.concat(userData[i])
+        }
+    }
+
+    successes = numOfSuccesses(bigArray)
+    fails     = numOfFailures(bigArray)
+
+    return (successes/ (successes + fails))
+}
