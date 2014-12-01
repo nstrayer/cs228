@@ -1,0 +1,83 @@
+body{
+    font-family: optima;
+    font-size: 40pt;
+    color: white;
+    background-color: steelblue;
+}
+
+strong {
+    font-weight: normal;
+}
+
+#prompt {
+    float: left;
+}
+
+#userName {
+    float: right;
+}
+
+#numbersViz {
+    padding-top: 20px;
+    /*padding-right: 40px;*/
+    float: left;
+    clear: left;
+}
+
+#numberCount{
+    font-size: 25pt;
+    padding-top: 20px;
+    float: right;
+    clear: right;
+    /*width: 25%*/
+}
+
+/*#reward{
+    float:left;
+    clear:both;
+}*/
+
+input{
+
+    font-size: 42px;
+    font-family: optima;
+    background: steelblue;
+    color: white;
+
+}
+
+input[type="text"] {
+    padding: 0px;
+    width: 300px;
+    border: solid 0px steelblue;
+}
+
+input[type="submit"] {
+    border: solid 0px grey;
+    padding: 5px;
+    /*box-shadow: 1px 1px 2px 0 #707070;*/
+    padding
+    transition: box-shadow 0.3s;
+}
+
+
+input:focus,
+input[type="text"].focus {
+    outline:0;
+}
+
+.Absolute-Center {
+    text-align: center;
+    height: 50%;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.Center {
+    text-align: center;
+    margin: auto;
+    position: absolute;
+    z-index: -100;
+    top: 0; left: 0; bottom: 0; right: 0;
+}

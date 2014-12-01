@@ -1,0 +1,21 @@
+Restructure the local storage to have the form
+localStorage[userName] = {0:{succesful: 2, fail: 3}, 1:{succesful: 3, fail: 1}... }
+
+debug all of the stuff from last time. Doesn't seem to work perfectly.
+
+add an overall progress bar:
+    will necesitate an overall success rate function.
+
+progress vis will be:
+
+--Current number |=======|
+--Overall         |=====|
+--Last time       |======|
+
+
+Next to do:
+- Figure out how to get "last time" data and implement that into the viz as well. May actually not be needed... too much data.
+- migrate repeated stuff to framesAfter == 100 conditional
+
+For end product:
+have a intro hand/hands be playful when user is signing in or registering
